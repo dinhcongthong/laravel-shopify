@@ -10,6 +10,7 @@ use Illuminate\Support\Facades\DB;
 use Osiset\BasicShopifyAPI\BasicShopifyAPI;
 use Osiset\BasicShopifyAPI\Options;
 use Osiset\BasicShopifyAPI\Session;
+use Encore\Admin\Facades\Admin;
 
 class Controller extends BaseController
 {
@@ -33,8 +34,7 @@ class Controller extends BaseController
     }
 
     public function api() {
-        // $shop = DB::table('users')->where('name', env('SHOPIFY_MYSHOPIFY_DOMAIN'))->first();
-        $shop = DB::table('users')->where('name', config('shopify-app.myshopify_domain'))->first();
+        $shop = DB::table('users')->where('id', Admin::user()->id_myshopify)->first();
         $api = new BasicShopifyAPI($this->options());
         $api->setSession(new Session($shop->name, $shop->password));
         return $api;
